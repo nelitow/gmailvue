@@ -29,34 +29,67 @@ import axios from "axios";
 import marked from "marked";
 import useKeydown from "../composables/useKeydown";
 export default {
-  setup(props) {
+  setup(props, { emit }) {
     let email = props.email;
     let toggleRead = () => {
-      email.read = !email.read;
-      axios.put(`http://localhost:3000/emails/${email.id}`, email);
+      emit("changeEmail", { toggleRead: true, save: true });
     };
     let toggleArchived = () => {
-      email.archived = !email.archived;
-      axios.put(`http://localhost:3000/emails/${email.id}`, email);
+      emit("changeEmail", {
+        toggleArchive: true,
+        save: true,
+        closeModal: true,
+      });
+    };
+    let goNewer = () => {
+      emit("changeEmail", { changeIndex: -1 });
+    };
+    let goOlder = () => {
+      emit("changeEmail", { changeIndex: 1 });
+    };
+    let goNewerAndArchive = () => {
+      emit("changeNewer", {
+        changeIndex: -1,
+        toggleArchived: true,
+        save: true,
+      });
+    };
+    let goOlderAndArchive = () => {
+      emit("changeEmail", { changeIndex: 1, toggleArchived: true, save: true });
     };
     useKeydown([
       {
         key: "r",
-        fn: () => {
-          toggleRead();
-        },
+        fn: toggleRead,
       },
       {
         key: "a",
-        fn: () => {
-          toggleArchived();
-        },
+        fn: toggleArchived,
+      },
+      {
+        key: "n",
+        fn: goNewer,
+      },
+      {
+        key: "o",
+        fn: goOlder,
+      },
+      {
+        key: "[",
+        fn: goNewerAndArchive,
+      },
+      {
+        key: "]",
+        fn: goOlderAndArchive,
       },
     ]);
     return {
       format,
       marked,
       toggleRead,
+      toggleArchived,
+      goNewer,
+      goOlder,
     };
   },
   props: {

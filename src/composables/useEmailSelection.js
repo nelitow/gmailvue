@@ -9,11 +9,17 @@ export const useEmailSelection = function () {
         } else {
             emails.add(email);
         }
-        console.log(selected);
     }
-
+    let clear = () => {
+        emails.clear()
+    }
+    let addMultiple = (newEmails) => {
+        newEmails.forEach((email) => {
+            emails.add(email)
+        })
+    }
     return {
-        emails, toggle
+        emails, toggle, clear, addMultiple
     }
 }
 

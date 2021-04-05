@@ -1,7 +1,6 @@
 <template>
   <h1>VMail Inbox</h1>
 
-  {{ emailSelection.emails.size }} emails selected
 
   <Suspense>
     <template #default>
@@ -35,6 +34,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+html {
+  background: #777
 }
 
 /* Global Styles */
